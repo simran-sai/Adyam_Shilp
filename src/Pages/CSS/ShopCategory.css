@@ -1,0 +1,33 @@
+.shopcategory-banner img {
+    display: block;
+    margin-left: 9.5vw;
+    width: 82%;  
+}
+.shopcategory-indexsort{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+.shopcategory-sort{
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    font-size: 1.5vw;
+}
+.shopcategory-indexsort p span{
+    font-size: 1.5vw;
+}
+.shopcategory-products{
+    display: flex;  
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+
+}
+
+
+

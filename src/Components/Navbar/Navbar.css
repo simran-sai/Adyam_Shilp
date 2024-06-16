@@ -1,6 +1,7 @@
+
 .navbar{
     display: flex;
-    background-image: linear-gradient( 58.2deg,  rgba(40,91,212,0.73) -3%, rgba(171,53,163,0.45) 49.3%, rgba(255,204,112,0.37) 97.7% );
+    background : white;
     justify-content: space-around;
     padding: 16px;
     padding: 0 1px 3px 2px rgba(0, 0, 0, 0.2);
@@ -33,14 +34,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 5px;
     cursor: pointer;
+    font-size: 18px;
 }
 .nav-menu hr{
     border:none;
     height: 3px;
     width: 80%;
-    background-color: #f3a8a8;
+    background-color:  #f7126a;
     border-radius: 10px;
 }
 .nav-menu li:hover{

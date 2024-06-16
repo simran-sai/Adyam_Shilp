@@ -1,0 +1,98 @@
+/* General container styling */
+.loginsignup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f5c6e8; /* Soft pink background */
+    font-family: 'Arial', sans-serif; /* Clean typography */
+}
+
+/* Container for login/signup form */
+.loginsignup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto; /* Auto height for content */
+    width: 90%; /* Responsive width */
+    max-width: 400px; /* Max width for larger screens */
+    background-color: white;
+    margin-top: 25vh;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Prevents scrolling inside the container */
+}
+
+/* Heading style */
+.loginsignup-container h1 {
+    color: #171717; /* Dark text for contrast */
+    font-size: 2.5rem; /* Large font size */
+    font-weight: 700; /* Bold weight */
+    text-align: center; /* Center-aligned text */
+    margin-bottom: 1.5rem; /* Spacing under the title */
+}
+
+/* Fields container */
+.loginsignup-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%; /* Full width for inputs */
+    max-width: 350px; /* Smaller max width for smaller screens */
+    padding: 1rem; /* Padding around the fields */
+}
+
+/* Input field styles */
+.loginsignup-fields input {
+    height: 45px; /* Increased height for better touch targets */
+    width: 100%; /* Full width for usability */
+    border: 1px solid #ccc; /* Lighter border */
+    border-radius: 5px; /* Rounded corners */
+    outline: none; /* Removes the focus outline */
+    padding-left: 10px; /* Padding inside the input */
+    font-size: 1.125rem; /* Medium font size */
+    font-weight: 400; /* Regular weight */
+    margin-bottom: 1rem; /* Spacing between inputs */
+    transition: border-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Active input field */
+.loginsignup-fields input:focus {
+    border-color: #007bff; /* Blue border on focus */
+}
+
+/* Button styling */
+.loginsignup-fields button {
+    height: 45px; /* Matched with input fields */
+    width: 100%; /* Full width for usability */
+    border: none; /* No border */
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1.125rem; /* Matched with input fields */
+    font-weight: 600; /* Semi-bold weight */
+    margin-top: 1rem; /* Spacing above the button */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect on button */
+.loginsignup-fields button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsive media query for smaller devices */
+@media (max-width: 768px) {
+   .loginsignup-container {
+        width: 95%; /* Adjusts width for smaller screens */
+        margin-top: 15vh; /* Adjusts top margin for smaller screens */
+    }
+
+   .loginsignup-fields input,
+   .loginsignup-fields button {
+        font-size: 1rem; /* Slightly smaller font size for smaller screens */
+    }
+}

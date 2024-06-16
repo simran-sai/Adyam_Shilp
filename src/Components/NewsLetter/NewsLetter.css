@@ -1,50 +1,86 @@
-.news-letter{
+.news-letter {
     display: flex;
     flex-direction: column;
     background: linear-gradient(to bottom, #95f3a2, #fbfdfc);
     align-items: center;
-    gap: 10px;
-    height: 40vh;
-    width: 65%;
+    gap: 30px; /* Adjusted gap for better spacing */
+    height: auto; /* Adjusted to auto for content-based sizing */
+    width: 90%; /* Adjusted width for better responsiveness */
     margin: auto;
-    padding: 0px 140px;
-    margin-bottom: 150px;
-    gap: 30px;
+    padding: 0px 40px; /* Reduced horizontal padding for smaller screens */
+    margin-bottom: 100px;
+    margin-top: 100px;
 }
-.news-letter h1{
-    color: 171717;
-    font-size: 55px;
+
+.news-letter h1 {
+    color: #171717;
+    font-size: clamp(24px, 3vw, 45px); /* Responsive font size */
     font-weight: 600;
 }
-.news-letter p{
+
+.news-letter p {
     color: #171717;
-    font-size: 20px;
+    font-size: clamp(14px, 2vw, 20px); /* Responsive font size */
 }
-.news-letter div{
+
+.news-letter div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background: #fbfdfc;
-    width: 730px;
+    width: 100%; /* Make div responsive */
+    max-width: 730px; /* Ensure maximum width */
     height: 70px;
     border-radius: 20px;
     border: 1px solid #f8f8f8;
+    padding: 0 20px; /* Add padding for better alignment on smaller screens */
 }
-.news-letter input{
-    width: 500px;
+
+.news-letter input {
+    width: 100%; /* Make input responsive */
+    max-width: 500px; /* Ensure maximum width */
     height: 30px;
     border: none;
     outline: none;
     color: black;
     font-family: Poppins;
-    font-size: 16px;    
+    font-size: clamp(12px, 2vw, 16px); /* Responsive font size */
 }
-.news-letter div button{
-    width: 210px;
+
+.news-letter div button {
+    width: 100%; /* Make button responsive */
+    max-width: 210px; /* Ensure maximum width */
     height: 70px;
     border-radius: 20px;
     background: #0b0b0b;
     color: white;
-    font-size: 16px;
+    font-size: clamp(10px, 2vw, 16px); /* Responsive font size */
     cursor: pointer;
+}
+
+/* Media Query for smaller devices */
+@media (max-width: 768px) {
+  .news-letter {
+        padding: 0px 20px; /* Further reduce horizontal padding for very small screens */
+    }
+
+  .news-letter h1 {
+        font-size: clamp(30px, 4vw, 45px); /* Adjust font size further for smaller screens */
+    }
+
+  .news-letter p {
+        font-size: clamp(12px, 2vw, 18px); /* Adjust font size further for smaller screens */
+    }
+
+  .news-letter div {
+        padding: 0 10px; /* Reduce padding for better alignment on very small screens */
+    }
+
+  .news-letter input {
+        font-size: clamp(10px, 2vw, 14px); /* Further adjust font size for smaller screens */
+    }
+
+  .news-letter div button {
+        font-size: clamp(8px, 2vw, 14px); /* Further adjust font size for smaller screens */
+    }
 }

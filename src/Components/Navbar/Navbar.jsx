@@ -12,9 +12,9 @@ return (
         <p>Adyam Shilp</p>
       </div>
       <ul className="nav-menu">
-        <li onClick={() => setMenu("shop")}><Link style={{textDecoration:'none'}} to='/'>Shop</Link>{menu==="shop" ? <hr/> : <></>}</li>
-        <li onClick={() => setMenu("god idol")}><Link style={{textDecoration:'none'}} to='/god idol'>God Idol</Link>{menu==="god idol" ? <hr/> : <></>}</li>
-        <li onClick={() => setMenu("rakhi")}><Link style={{textDecoration:'none'}} to='/rakhi'>Rakhi</Link>{menu==="rakhi" ? <hr/> : <></>}</li>
+        <li onClick={() => setMenu("Shop")}><Link style={{textDecoration:'none'}} to='/'>Shop</Link>{menu==="Shop" ? <hr/> : <></>}</li>
+        <li onClick={() => setMenu("God idols")}><Link style={{textDecoration:'none'}} to='/God idols'>God Idols</Link>{menu==="God idols" ? <hr/> : <></>}</li>
+        <li onClick={() => setMenu("Accessories and Rakhi")}><Link style={{textDecoration:'none'}} to='/Accessories and Rakhi'>Accessories and Rakhi</Link>{menu==="Accessories and Rakhi" ? <hr/> : <></>}</li>
         <li onClick={() => setMenu("Home decor")}><Link style={{textDecoration:'none'}} to='/Home Decor'>Home Decor</Link>{menu==="Home decor" ? <hr/> : <></>}</li>
       </ul>
       <div className="nav-login-cart">

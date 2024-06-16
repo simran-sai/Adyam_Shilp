@@ -4,13 +4,15 @@
     background: linear-gradient(to right, #ffa1de, #d1fff0);
     align-items: center;
     gap: 10px;
-    height: 70vh;
-    margin-bottom: 100px;
-    margin-top: 100px;
+    height: 100vh;
+    margin-bottom: 7vh;
+    margin-top:7vh;
+    height: auto;
+    
 }
 .Popular h1{
     color: 171717;
-    font-size: 50px;
+    font-size: 45px;
     font-weight: 600;
 }
 .Popular hr{
@@ -20,7 +22,12 @@
     background: #171717;
 }
 .popular-items{
-    margin-top: 50px;
     display: flex;
-    gap: 30px;
+    justify-content: center;
+    gap: 2vw;
+    margin-left: 3vw;
+    flex-wrap: wrap;
+    
+
+
 }
