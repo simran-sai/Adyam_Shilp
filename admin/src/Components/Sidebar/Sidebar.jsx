@@ -1,23 +1,24 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './Sidebar.css';
 import add_product_icon from '../../assets/add_product_icon.png';
 import list_product_icon from '../../assets/list_product_icon.png';
 
 const Sidebar = () => {
   return (
     <div className='sidebar'>
-      <NavLink to='/addproduct' activeClassName='active-link' style={{ textDecoration: "none" }}>
+      <Link to={'/addproduct'} style={{textDecoration: "none"}}>
         <div className="sidebar-item">
-          <img src={add_product_icon} alt="Add Product" />
+          <img src={add_product_icon} alt="" />
           <p>Add Product</p>
         </div>
-      </NavLink>
-      <NavLink to='/listproduct' activeClassName='active-link' style={{ textDecoration: "none" }}>
+      </Link>
+      <Link to={'/listproduct'} style={{textDecoration: "none"}}>
         <div className="sidebar-item">
-          <img src={list_product_icon} alt="Product List" />
-          <p>Product List</p>
+          <img src={list_product_icon} alt="" />
+          <p>List Product</p>
         </div>
-      </NavLink>
+      </Link>
     </div>
   );
 };

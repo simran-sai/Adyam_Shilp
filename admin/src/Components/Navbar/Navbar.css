@@ -13,10 +13,12 @@
     font-size: 30px;
     font-weight: 600;
     color: white;
+    margin-left: 5vw;
 }
 @media(max-width:800px){
     .navbar p{
         font-size: 20px;
+        margin-left: 1vw;
     }
     .navbar{
         padding: 0 1px 3px 1px;

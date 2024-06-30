@@ -1,57 +1,84 @@
-/* Base styles for larger screens */
+/* Sidebar.css */
+
 .sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #f8f9fa;
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
-  gap: 10px;
-  width: 100%;
-  max-width: 250px;
-  background: #f5f5f5;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  padding-top: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s ease;
 }
 
 .sidebar-item {
+  width: 80%;
+  margin: 15px 0;
+  padding: 10px;
   display: flex;
   align-items: center;
-  cursor: pointer;
-  padding: 10px;
   border-radius: 5px;
-}
-
-.sidebar-item img {
-  margin-right: 10px;
-  height: 20%;
-  width: 20%;
-}
-
-.active-link.sidebar-item {
-  background-color: #e0e0e0;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .sidebar-item:hover {
-  background-color: #d9d9d9;
+  background-color: #e9ecef;
+  transform: translateX(5px);
 }
 
-/* Styles for smaller screens */
-@media (max-width: 768px) {
- .sidebar {
-    max-width: 100%; /* Full width on small screens */
-    padding-left: 0; /* Remove left padding */
-    padding-right: 0; /* Remove right padding */
+.sidebar-item img {
+  margin-right: 15px;
+}
+
+.sidebar-item p {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Responsive design */
+@media (max-width: 800px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    box-shadow: none;
   }
 
- .sidebar-item {
-    padding: 5px; /* Reduce padding for smaller screens */
+  .sidebar-item {
+    width: 100%;
+    margin: 10px 0;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .sidebar-item img {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-item p {
+    font-size: 14px;
   }
 }
 
-/* Additional media query for even smaller screens */
 @media (max-width: 480px) {
- .sidebar {
-    padding-top: 20px; /* Increase top padding for extra space */
+  .sidebar {
+    padding: 5px;
   }
 
- .sidebar-item {
-    padding: 3px; /* Further reduce padding for very small screens */
+  .sidebar-item {
+    margin: 8px 0;
+    padding: 8px;
+  }
+
+  .sidebar-item p {
+    font-size: 12px;
   }
 }
