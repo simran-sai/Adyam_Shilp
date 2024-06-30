@@ -30,7 +30,7 @@ const ProductDisplay = (props) => {
                 <img src={star_icon} alt="" />
                 <img src={star_icon} alt="" />
                 <img src={star_dull_icon} alt="" />
-                <p>122</p>
+                <p>(122)</p>
             </div>
             <div className="productdisplay-right-prices">
                 <div className="productdisplay-right-price-old">
@@ -54,7 +54,7 @@ const ProductDisplay = (props) => {
             </div>
             <button onClick={()=>{addToCart(product.id)}}>Add To Cart</button>
             <p className='productdisplay-right-category'><span>Category: </span>Gods Idol , Pooja</p>
-            <p className='productdisplay-right-category'><span>Tags: </span>Morden , Latest</p>
+            <p className='productdisplay-right-category'><span>Tags: </span>Modern, Latest</p>
         </div>
     </div>
   )

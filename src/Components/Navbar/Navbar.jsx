@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import dropdown_icon from '../Assets/dropdown_icon.png';
 
 const Navbar = () => {
-    const [menu, setMenu] = useState("shop");
+    const [menu, setMenu] = useState("Shop");
     const { getTotalCartAmount } = useContext(ShopContext);
     const menuRef = useRef();
     const dropdown_toggle = (e) => {

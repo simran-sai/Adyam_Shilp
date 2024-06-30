@@ -22,9 +22,10 @@
 .collections{
     display: flex;
     justify-content: center;
-    gap: 1vw;
+    gap: 5vw;
     margin-left: 3vw;
     flex-wrap: wrap;
+    margin-right: 5.5vw;
 }
 .collections img{
     width: 43vh;
