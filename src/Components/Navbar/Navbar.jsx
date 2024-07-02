@@ -29,7 +29,8 @@ return (
         <li onClick={() => setMenu("Home decor")}><Link style={{textDecoration:'none'}} to='/Home Decor'>Home Decor</Link>{menu==="Home decor" ? <hr/> : <></>}</li>
       </ul>
       <div className="nav-login-cart">
-         <Link to='/login'><button>Login</button></Link>
+        {localStorage.setItem("auth-token")?<button onClick={() => {localStorage.removeItem('auth-token');window.location.replace("/")}}></button>:
+         <Link to='/login'><button>Login</button></Link>}
          <Link to='/cart'><img src={cart_icon} alt=""/></Link>
          <div className="nav-cart-count">{getTotalCartAmount()}</div>
       </div>
