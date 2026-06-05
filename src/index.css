@@ -1,17 +1,133 @@
-*{
-  margin: 0;
-}
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: 'poppins';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap');
+
+/* ═══════════════════════════════════════════════════════
+   DESIGN TOKENS — unified color system for Adyam Shilp
+   ═══════════════════════════════════════════════════════ */
+:root {
+  /* Brand palette */
+  --bg-base:       #0e0b07;
+  --bg-card:       #171208;
+  --bg-surface:    #1e1710;
+  --bg-elevated:   #261d12;
+
+  --accent-gold:   #e8a838;
+  --accent-warm:   #d4733a;
+  --accent-rose:   #c8547a;
+  --accent-violet: #7c5cbf;
+
+  --text-primary:  #f5ede0;
+  --text-secondary:#b8a48a;
+  --text-muted:    #7a6a55;
+
+  --border-subtle: rgba(232,168,56,0.12);
+  --border-card:   rgba(232,168,56,0.18);
+
+  --gradient-gold:    linear-gradient(135deg, #e8a838 0%, #d4733a 100%);
+  --gradient-hero:    linear-gradient(135deg, #1a0f05 0%, #0e0b07 60%, #110a18 100%);
+  --gradient-section: linear-gradient(180deg, #0e0b07 0%, #13100a 100%);
+
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-gold: 0 4px 20px rgba(232,168,56,0.25);
+
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ── Global reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+a   { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+ul { list-style: none; }
+
+/* ── Shared section header ── */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(232,168,56,0.1);
+  border: 1px solid rgba(232,168,56,0.25);
+  color: var(--accent-gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.15;
+}
+
+.section-divider {
+  width: 56px;
+  height: 3px;
+  background: var(--gradient-gold);
+  border-radius: 4px;
+  margin: 16px 0 0;
+  border: none;
+}
+
+/* ── Gold button ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gradient-gold);
+  color: #0e0b07;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  border: none;
+  transition: var(--transition);
+  box-shadow: var(--shadow-gold);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(232,168,56,0.4);
+}
+
+/* ── Ghost button ── */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 13px 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-card);
+  transition: var(--transition);
+}
+.btn-ghost:hover {
+  background: rgba(232,168,56,0.08);
+  border-color: rgba(232,168,56,0.4);
+  color: var(--accent-gold);
 }

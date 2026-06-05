@@ -184,7 +184,7 @@ let all_products = [
         name: "Customised Key Ring",
         new_price: 1290,
         old_price: 1400,
-        category: " Accessories and Rakhi",
+        category: "Accessories and Rakhi",
         img: p22_img,   
     },
     {
@@ -256,6 +256,7 @@ let all_products = [
         name: "Hand made clay portrait",
         new_price: 1500,
         old_price: 2000,
+        category: "Home Decor",
         img: p6_img,
     },
     {
@@ -263,6 +264,7 @@ let all_products = [
         name: "NamePlate",
         new_price: 90,
         old_price: 100,
+        category: "Home Decor",
         img: p7_img,
     },
     {
@@ -270,6 +272,7 @@ let all_products = [
         name: "Beautiful Clay Dolls",
         new_price: 1900,
         old_price: 2000,
+        category: "Home Decor",
         img: p8_img,
     },
     {
@@ -277,6 +280,7 @@ let all_products = [
         name: "Hand made clay portrait",
         new_price: 1500,
         old_price: 2000,
+        category: "Home Decor",
         img: p46_img,
     },
     {
@@ -284,6 +288,7 @@ let all_products = [
         name: "Hand made clay portrait",
         new_price: 1500,
         old_price: 2000,
+        category: "Home Decor",
         img: p38_img,
     },
     {
@@ -291,6 +296,7 @@ let all_products = [
         name: "Hand made clay portrait",
         new_price: 1500,
         old_price: 2000,
+        category: "Home Decor",
         img: p53_img,
     },
     
