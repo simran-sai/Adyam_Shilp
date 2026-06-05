@@ -1,33 +1,76 @@
+/* ══ SHOP CATEGORY ════════════════════════════════════════════════════════ */
+.shop-category {
+  min-height: 100vh;
+  background: var(--bg-base);
+  padding-bottom: 80px;
+}
+
+.shopcategory-banner {
+  width: 100%;
+  overflow: hidden;
+  max-height: 340px;
+  position: relative;
+}
+.shopcategory-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, var(--bg-base) 100%);
+}
 .shopcategory-banner img {
-    display: block;
-    margin-left: 9.5vw;
-    width: 82%;  
-}
-.shopcategory-indexsort{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 5vw;
-    margin-right: 5vw;
-}
-.shopcategory-sort{
-    display: flex;
-    align-items: center;
-    gap: 1vw;
-    font-size: 1.5vw;
-}
-.shopcategory-indexsort p span{
-    font-size: 1.5vw;
-}
-.shopcategory-products{
-    display: flex;  
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2vw;
-    margin-left: 5vw;
-    margin-right: 5vw;
-
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.75);
 }
 
+.shopcategory-indexsort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 60px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.shopcategory-indexsort p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.shopcategory-indexsort p span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
 
+.shopcategory-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.shopcategory-sort:hover { border-color: rgba(232,168,56,0.4); color: var(--accent-gold); }
+.shopcategory-sort img { width: 14px; filter: brightness(0) invert(0.6); }
 
+.shopcategory-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 28px;
+  padding: 40px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .shopcategory-indexsort { padding: 20px 24px; }
+  .shopcategory-products { padding: 32px 24px; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+@media (max-width: 480px) {
+  .shopcategory-products { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 24px 16px; }
+}
