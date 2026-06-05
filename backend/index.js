@@ -11,7 +11,14 @@ app.use(express.json());
 app.use(cors());
 
 // Database connection with MongoDB
-mongoose.connect("mongodb+srv://simranpatrosai1:aJToA6k1phzZhrWJ@cluster0.dbwn4xb.mongodb.net/E-Commerce");
+mongoose.connect("mongodb+srv://simranpatrosai1:aJToA6k1phzZhrWJ@cluster0.dbwn4xb.mongodb.net/E-Commerce", {
+    serverSelectionTimeoutMS: 5000,
+}).then(() => {
+    console.log("MongoDB Connected Successfully");
+}).catch((err) => {
+    console.error("MongoDB connection failed:", err.message);
+    console.warn("App will run without database. Please check your MongoDB credentials/network.");
+});
 
 // Schema for creating products
 const ProductSchema = mongoose.Schema({
@@ -113,7 +120,7 @@ app.post('/addproduct', async (req, res) => {
 });
 //Creating API for deleting Products
 app.post('/removeproduct',async(req,res) =>{
-    await Product.findOneAndDeleter({id:req.body.id});
+    await Product.findOneAndDelete({id:req.body.id});
     console.log("Removed");
     res.json({
         success:true,
@@ -195,7 +202,7 @@ app.post('/login',async(req,res)=>{
             const token = jwt.sign(data,'secret_ecom');
             res.json({success:true,token});
         }else{
-            rmSync.json({success:false,errors:"Incorrect Password"});
+            res.json({success:false,errors:"Incorrect Password"});
         }
     } else{
         res.json({success:false,errors:"Incorrect Email Id"});
@@ -208,4 +215,13 @@ app.listen(port, (error) => {
     } else {
         console.log(`Server is running on port ${port}`);
     }
+});
+
+// Keep server alive even on unhandled async errors
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection:', reason?.message || reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err.message);
 });

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './ProductDisplay.css'
 import star_icon from '../Assets/star_icon.png'
 import star_dull_icon from '../Assets/star_dull_icon.png'
@@ -7,10 +7,19 @@ import { useContext } from 'react';
 
 
 const ProductDisplay = (props) => {
-    const {product}=props;
-    const {addToCart} = useContext(ShopContext);
+    const { product } = props;
+    const { addToCart, recordView } = useContext(ShopContext);
+
+    // Record that this product was viewed (for recommendation engine)
+    useEffect(() => {
+        if (product?.id) {
+            recordView(product.id);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [product?.id]);
+
   return (
-    <div class='productdisplay'>
+    <div className='productdisplay'>
         <div className="productdisplay-left">
             <div className="productdisplay-img-list">
                 <img src={product.img} alt="" />
@@ -25,7 +34,7 @@ const ProductDisplay = (props) => {
         <div className="productdisplay-right">
             <h1>{product.name}</h1>
             <div className="productdisplay-right-star">
-                <img src= {star_icon} alt="" />
+                <img src={star_icon} alt="" />
                 <img src={star_icon} alt="" />
                 <img src={star_icon} alt="" />
                 <img src={star_icon} alt="" />
@@ -34,27 +43,24 @@ const ProductDisplay = (props) => {
             </div>
             <div className="productdisplay-right-prices">
                 <div className="productdisplay-right-price-old">
-                    ${product.old_price}
+                    ₹{product.old_price}
                 </div>
                 <div className="productdisplay-right-prices-new">
-                    ${product.new_price}
+                    ₹{product.new_price}
                 </div>
             </div>
             <div className="productdisplay-right-description">
-               Hand made things to decor home
+               Hand crafted items to decor home — made with love in India
             </div>
             <div className="productdisplay-right-size">
-                <h1>Select Size</h1>
+                <h1>Category</h1>
                 <div className="productdisplay-right-sizes">
-                    <div>S</div>
-                    <div>M</div>
-                    <div>L</div>
-                    <div>XL</div>
+                    <div>{product.category || 'Handcraft'}</div>
                 </div>
             </div>
-            <button onClick={()=>{addToCart(product.id)}}>Add To Cart</button>
-            <p className='productdisplay-right-category'><span>Category: </span>Gods Idol , Pooja</p>
-            <p className='productdisplay-right-category'><span>Tags: </span>Modern, Latest</p>
+            <button onClick={() => { addToCart(product.id) }}>Add To Cart</button>
+            <p className='productdisplay-right-category'><span>Category: </span>{product.category || 'Handcraft'}</p>
+            <p className='productdisplay-right-category'><span>Tags: </span>Handmade, Artisan, Indian Craft</p>
         </div>
     </div>
   )
