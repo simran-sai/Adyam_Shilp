@@ -118,7 +118,6 @@ const ShopContextProvider = (props) => {
         const cartIds = Object.keys(CartItems).filter((id) => CartItems[id] > 0).map(Number);
         const dislikedIds = [...disliked];
         const likedIds    = [...liked];
-        const viewedIds   = viewHistory.map((e) => e.id);
         const now = Date.now();
 
         // --- Category weight map ---
