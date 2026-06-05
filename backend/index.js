@@ -1,4 +1,5 @@
-const port = 4000;
+require('dotenv').config();
+const port = process.env.PORT || 4000;
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 
 // Database connection with MongoDB
-mongoose.connect("mongodb+srv://simranpatrosai1:aJToA6k1phzZhrWJ@cluster0.dbwn4xb.mongodb.net/E-Commerce", {
+mongoose.connect(process.env.MONGO_URI, {
     serverSelectionTimeoutMS: 5000,
 }).then(() => {
     console.log("MongoDB Connected Successfully");
@@ -73,9 +74,10 @@ const upload = multer({
 // Creating upload endpoints for images
 app.use('/images', express.static(path.join('upload/images')));
 app.post("/upload", upload.single('product'), (req, res) => {
+    const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
     res.json({
         success: 1,
-        image_url: `http://localhost:${port}/images/${req.file.filename}`
+        image_url: `${baseUrl}/images/${req.file.filename}`
     });
 });
 
@@ -183,7 +185,7 @@ app.post('/signup',async(req,res)=>{
         }
     }
 
-    const token = jwt.sign(data, 'secret_ecom');
+    const token = jwt.sign(data, process.env.JWT_SECRET || 'secret_ecom');
     res.json({success:true,token});
 })
 
@@ -199,7 +201,7 @@ app.post('/login',async(req,res)=>{
                     id:user.id
                 }
             }
-            const token = jwt.sign(data,'secret_ecom');
+            const token = jwt.sign(data, process.env.JWT_SECRET || 'secret_ecom');
             res.json({success:true,token});
         }else{
             res.json({success:false,errors:"Incorrect Password"});
