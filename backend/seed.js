@@ -1,8 +1,9 @@
 // Seed script: Insert all products from all_products.js into new Atlas cluster
+// Usage: Copy backend/.env to this folder or set MONGO_URI in your environment
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const MONGO_URI = 'mongodb+srv://anwesharanigouda_db_user:h0Av03iI7bwkvmR3@cluster0.v2nan8e.mongodb.net/E-Commerce';
+const MONGO_URI = process.env.MONGO_URI;
 
 const BASE_IMG = 'https://adyam-shilp.vercel.app/static/media';
 

@@ -1,8 +1,15 @@
 // Migration script: Copy products from old Atlas → new Atlas
+// Usage: Set OLD_MONGO_URI and NEW_MONGO_URI in your .env or environment
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-const OLD_URI = 'mongodb+srv://simranpatrosai1:aJToA6k1phzZhrWJ@cluster0.dbwn4xb.mongodb.net/E-Commerce';
-const NEW_URI = 'mongodb+srv://anwesharanigouda_db_user:h0Av03iI7bwkvmR3@cluster0.v2nan8e.mongodb.net/E-Commerce';
+const OLD_URI = process.env.OLD_MONGO_URI || process.env.MONGO_URI;
+const NEW_URI = process.env.NEW_MONGO_URI || process.env.MONGO_URI;
+
+if (!OLD_URI || !NEW_URI) {
+    console.error('❌ Please set OLD_MONGO_URI and NEW_MONGO_URI in your environment.');
+    process.exit(1);
+}
 
 const ProductSchema = new mongoose.Schema({
     id: Number,
@@ -32,7 +39,6 @@ async function migrate() {
         console.log('⚠️  No products found in old database. Nothing to migrate.');
     } else {
         console.log('💾 Inserting into new cluster...');
-        // Remove _id so MongoDB generates new ones
         const clean = products.map(({ _id, __v, ...rest }) => rest);
         await NewProduct.insertMany(clean, { ordered: false });
         console.log(`🎉 Successfully migrated ${products.length} products!`);
