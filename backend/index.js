@@ -5,8 +5,19 @@ const app = express();
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const multer = require("multer");
+const multerS3 = require('multer-s3');
+const { S3Client } = require('@aws-sdk/client-s3');
 const path = require("path");
 const cors = require('cors');
+
+// AWS S3 Client
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+});
 
 app.use(express.json());
 app.use(cors());
@@ -59,25 +70,24 @@ const ProductSchema = mongoose.Schema({
 
 const Product = mongoose.model('Product', ProductSchema);
 
-// Image Storage Engine
-const storage = multer.diskStorage({
-    destination: './upload/images',
-    filename: (req, file, cb) => {
-        return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
-    }
-});
-
+// Image Storage Engine — AWS S3
 const upload = multer({
-    storage: storage
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.S3_BUCKET_NAME,
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        key: (req, file, cb) => {
+            const filename = `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`;
+            cb(null, filename);
+        }
+    })
 });
 
-// Creating upload endpoints for images
-app.use('/images', express.static(path.join('upload/images')));
+// Upload endpoint — returns public S3 URL
 app.post("/upload", upload.single('product'), (req, res) => {
-    const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
     res.json({
         success: 1,
-        image_url: `${baseUrl}/images/${req.file.filename}`
+        image_url: req.file.location  // S3 public URL
     });
 });
 
