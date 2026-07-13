@@ -1,14 +1,20 @@
 # ✦ Adyam Shilp
 
-**Adyam Shilp** is a modern, premium e-commerce web application dedicated to Indian handcrafted goods and artisan products. It features a bespoke dark-themed aesthetic with gold accents, and a robust backend to handle user authentication, product management, and personalized recommendations.
+**Adyam Shilp** is a modern, premium e-commerce web application dedicated to Indian handcrafted goods and artisan products. It features a bespoke dark-themed aesthetic with gold accents, a robust AWS-powered backend, personalized recommendations, and full user authentication.
+
+🌐 **Live Demo:** [adyam-shilp.vercel.app](https://adyam-shilp.vercel.app)
+⚙️ **Live API:** [adyam-shilp-env.eba-bd6rx7vy.ap-south-1.elasticbeanstalk.com](http://adyam-shilp-env.eba-bd6rx7vy.ap-south-1.elasticbeanstalk.com)
+
+---
 
 ## 🌟 Key Features
 
-- **Premium Artisan UI:** A meticulously designed interface featuring glassmorphism, subtle micro-animations, and a cohesive dark/gold design token system.
-- **Personalized Recommendations Engine:** A multi-signal scoring system that tracks user view history, cart frequency, and likes/dislikes to generate real-time product suggestions.
-- **Full E-commerce Flow:** Browse by categories (God Idols, Home Decor, Rakhi), view detailed product pages, and manage shopping carts.
+- **Premium Artisan UI:** Glassmorphism, micro-animations, and a cohesive dark/gold design token system.
+- **Personalized Recommendations Engine:** Multi-signal scoring system tracking view history, cart frequency, and likes/dislikes for real-time product suggestions.
+- **Full E-commerce Flow:** Browse by categories (God Idols, Home Decor, Accessories & Rakhi), view product pages, and manage a shopping cart.
 - **Authentication:** Secure user login and registration using JWT (JSON Web Tokens).
-- **Responsive Design:** Fully fluid CSS Grid and Flexbox layouts optimized for mobile, tablet, and desktop viewing.
+- **Admin Dashboard:** Add, remove, and manage products via a dedicated admin panel.
+- **Responsive Design:** Fluid CSS Grid and Flexbox layouts for mobile, tablet, and desktop.
 
 ---
 
@@ -16,78 +22,178 @@
 
 **Frontend:**
 - React.js (Create React App)
-- React Router DOM (Navigation)
-- Vanilla CSS (Custom Design System via `index.css`)
+- React Router DOM
+- Vanilla CSS (Custom Design System)
+- Deployed on **Vercel**
 
 **Backend:**
 - Node.js & Express.js
-- MongoDB & Mongoose (Database & ORM)
+- MongoDB Atlas & Mongoose
 - JSON Web Tokens (Authentication)
-- Multer (Image uploads)
+- Multer + **AWS S3** (Image uploads)
+- Deployed on **AWS Elastic Beanstalk** (Node.js 22, Amazon Linux 2023)
+
+**Cloud Infrastructure (AWS):**
+| Service | Usage |
+|---|---|
+| **Elastic Beanstalk** | Backend hosting & auto-management (runs on EC2) |
+| **S3** (`adyam-shilp-images`) | Product image storage & admin uploads |
+| **IAM** | Role-based access control for EC2 & S3 |
+
+---
+
+## ☁️ AWS Architecture
+
+```
+User (Browser)
+    │
+    ├──► Vercel CDN ──► React Frontend
+    │
+    └──► AWS Elastic Beanstalk (ap-south-1)
+              │
+              ├──► EC2 Instance (Node.js 22)
+              │         └── Express.js REST API
+              │
+              ├──► MongoDB Atlas (E-Commerce DB)
+              │         ├── Products collection
+              │         └── Users collection
+              │
+              └──► AWS S3 (adyam-shilp-images)
+                        ├── products/ (59 images)
+                        └── deployments/ (app bundles)
+```
 
 ---
 
 ## 🚀 Getting Started (Local Development)
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB Database (Local or MongoDB Atlas)
+- Node.js v18+
+- AWS Account (for S3 image uploads)
+- MongoDB Atlas account
 
-### 1. Backend Setup
-1. Open a terminal and navigate to the `backend` folder:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Create a `.env` file in the `backend` folder and add your configuration:
-   ```env
-   PORT=4000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_secure_random_string
-   BASE_URL=http://localhost:4000
-   ```
-4. Start the server:
-   ```bash
-   node index.js
-   ```
+### 1. Clone the repository
+```bash
+git clone https://github.com/Anwesha0425/Adyam_Shilp.git
+cd Adyam_Shilp
+```
 
-### 2. Frontend Setup
-1. Open a new terminal and navigate to the root folder (`Adyam_Shilp`).
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Create a `.env` file in the root folder to point to your backend API:
-   ```env
-   REACT_APP_API_URL=http://localhost:4000
-   ```
-4. Start the React development server:
-   ```bash
-   npm start
-   ```
+### 2. Backend Setup
+```bash
+cd backend
+npm install
+```
 
-The application will open in your browser at `http://localhost:3000`.
+Create a `.env` file in the `backend/` folder:
+```env
+PORT=4000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_random_string
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=ap-south-1
+S3_BUCKET_NAME=your_s3_bucket_name
+```
+
+Start the backend:
+```bash
+npm start
+```
+
+### 3. Frontend Setup
+```bash
+# From the root Adyam_Shilp/ folder
+npm install
+```
+
+Create a `.env` file in the root folder:
+```env
+REACT_APP_API_URL=http://localhost:4000
+```
+
+Start the React dev server:
+```bash
+npm start
+```
+
+The app opens at `http://localhost:3000`.
 
 ---
 
 ## 🌍 Deployment
 
-The application is configured to be deployed easily on modern cloud hosting providers.
+### Backend → AWS Elastic Beanstalk
 
-**Backend (Render, Railway, Heroku):**
-- Set the Root Directory to `backend`.
-- Build Command: `npm install`
-- Start Command: `node index.js`
-- Remember to configure your Environment Variables (`MONGO_URI`, `JWT_SECRET`, etc.) in the provider's dashboard.
+1. Install & configure AWS CLI:
+   ```bash
+   aws configure
+   ```
+2. Create an S3 bucket for images
+3. Zip the `backend/` folder (excluding `node_modules/`, `.env`, `upload/`)
+4. Upload to S3 and deploy via EB CLI or AWS Console
+5. Set all environment variables in EB → Configuration → Software
 
-**Frontend (Vercel, Netlify):**
-- Import the repository and select Create React App.
-- Set the `REACT_APP_API_URL` environment variable to your deployed backend URL.
-- Deploy.
+### Frontend → Vercel
+
+1. Import the GitHub repository on [vercel.com](https://vercel.com)
+2. Set environment variable:
+   ```
+   REACT_APP_API_URL = https://your-eb-url.elasticbeanstalk.com
+   ```
+3. Deploy
+
+### Database Seeding (New Atlas Cluster)
+If you need to seed products into a fresh MongoDB cluster, use:
+```bash
+cd backend
+node seed_via_api.js   # Seeds 33 products via the live API
+```
 
 ---
 
-*Handcrafted with love by Indian artisans. Every piece tells a story.*
+## 📁 Project Structure
+
+```
+Adyam_Shilp/
+├── src/                        # React frontend
+│   ├── Components/             # Reusable UI components
+│   │   ├── Assets/             # Local images & product data
+│   │   ├── Navbar/
+│   │   ├── Hero/
+│   │   ├── Item/
+│   │   └── ...
+│   ├── Pages/                  # Route pages
+│   ├── Context/                # React Context (ShopContext)
+│   └── App.js
+│
+├── backend/                    # Node.js/Express API
+│   ├── index.js                # Main server (S3 + MongoDB)
+│   ├── package.json
+│   ├── .ebignore               # Elastic Beanstalk ignore rules
+│   ├── seed_via_api.js         # Product seeder script
+│   └── update_images_s3.js     # Migrate image URLs to S3
+│
+├── admin/                      # Admin dashboard
+├── .gitignore
+└── README.md
+```
+
+---
+
+## 🔐 Environment Variables
+
+> **Never commit `.env` files.** All secrets are managed via AWS EB environment variables and local `.env` files (git-ignored).
+
+| Variable | Where | Description |
+|---|---|---|
+| `MONGO_URI` | backend/.env + EB | MongoDB Atlas connection string |
+| `JWT_SECRET` | backend/.env + EB | JWT signing secret |
+| `AWS_ACCESS_KEY_ID` | backend/.env + EB | AWS credentials |
+| `AWS_SECRET_ACCESS_KEY` | backend/.env + EB | AWS credentials |
+| `AWS_REGION` | backend/.env + EB | e.g. `ap-south-1` |
+| `S3_BUCKET_NAME` | backend/.env + EB | S3 bucket for images |
+| `REACT_APP_API_URL` | .env + Vercel | Backend API base URL |
+
+---
+
+*Handcrafted with love by Indian artisans. Every piece tells a story.* 🪔
