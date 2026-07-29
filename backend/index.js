@@ -10,6 +10,9 @@ const { S3Client } = require('@aws-sdk/client-s3');
 const path = require("path");
 const cors = require('cors');
 
+// ML Service URL (Python FastAPI on port 8000 locally, Railway URL in prod)
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8000';
+
 // AWS S3 Client
 const s3 = new S3Client({
     region: process.env.AWS_REGION,
@@ -169,6 +172,117 @@ const Users = mongoose.model('Users', {
     }
 
 })
+
+// ── UserInteraction schema — stores behavioural events for ML collaborative filtering
+const InteractionSchema = new mongoose.Schema({
+    userId:    { type: String, required: true, index: true },
+    productId: { type: Number, required: true },
+    event:     { type: String, enum: ['view', 'like', 'dislike', 'cart'], required: true },
+    weight:    { type: Number, default: 1.0 },
+    ts:        { type: Number, default: () => Date.now() },
+});
+const Interaction = mongoose.model('Interaction', InteractionSchema);
+
+// ── JWT middleware for ML routes ──────────────────────────────────────────────
+const fetchUser = async (req, res, next) => {
+    const token = req.header('auth-token');
+    if (!token) { req.userId = 'anonymous'; return next(); }
+    try {
+        const data = jwt.verify(token, process.env.JWT_SECRET || 'secret_ecom');
+        req.userId = data.user.id;
+        next();
+    } catch {
+        req.userId = 'anonymous';
+        next();
+    }
+};
+
+// ── ML proxy helper ───────────────────────────────────────────────────────────
+const mlProxy = async (path, body) => {
+    const res = await fetch(`${ML_SERVICE_URL}${path}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(8000),
+    });
+    if (!res.ok) throw new Error(`ML service ${path} returned ${res.status}`);
+    return res.json();
+};
+
+// ── POST /api/interactions — record a behaviour event ─────────────────────────
+app.post('/api/interactions', fetchUser, async (req, res) => {
+    try {
+        const { productId, event, weight } = req.body;
+        if (!productId || !event) {
+            return res.status(400).json({ success: false, error: 'productId and event required' });
+        }
+        await Interaction.create({
+            userId:    req.userId,
+            productId: Number(productId),
+            event,
+            weight:    weight || 1.0,
+            ts:        Date.now(),
+        });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('interaction error:', err.message);
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+// ── POST /api/recommend — hybrid ML recommendations ───────────────────────────
+app.post('/api/recommend', fetchUser, async (req, res) => {
+    try {
+        const result = await mlProxy('/recommend', req.body);
+        res.json(result);
+    } catch (err) {
+        console.error('ML recommend error:', err.message);
+        // Graceful fallback: return empty so frontend uses heuristic
+        res.status(503).json({ success: false, error: 'ML service unavailable', fallback: true });
+    }
+});
+
+// ── POST /api/similar — KNN item-item similarity ──────────────────────────────
+app.post('/api/similar', async (req, res) => {
+    try {
+        const result = await mlProxy('/similar', req.body);
+        res.json(result);
+    } catch (err) {
+        console.error('ML similar error:', err.message);
+        res.status(503).json({ success: false, error: 'ML service unavailable', fallback: true });
+    }
+});
+
+// ── POST /api/trending — trending products ────────────────────────────────────
+app.post('/api/trending', async (req, res) => {
+    try {
+        // Fetch recent global interactions from MongoDB and send to ML service
+        const since = Date.now() - 24 * 60 * 60 * 1000; // last 24h
+        const interactions = await Interaction.find({ ts: { $gte: since } })
+            .select('userId productId event weight ts -_id')
+            .limit(500)
+            .lean();
+        const result = await mlProxy('/trending', {
+            interactions,
+            limit: req.body?.limit || 6,
+        });
+        res.json(result);
+    } catch (err) {
+        console.error('ML trending error:', err.message);
+        res.status(503).json({ success: false, error: 'ML service unavailable', fallback: true });
+    }
+});
+
+// ── GET /api/ml/health — ML service health check ──────────────────────────────
+app.get('/api/ml/health', async (req, res) => {
+    try {
+        const r = await fetch(`${ML_SERVICE_URL}/health`, { signal: AbortSignal.timeout(3000) });
+        const data = await r.json();
+        res.json({ node: 'ok', ml: data });
+    } catch {
+        res.status(503).json({ node: 'ok', ml: 'unavailable' });
+    }
+});
 
 //creating endpoint for registering users
 app.post('/signup',async(req,res)=>{

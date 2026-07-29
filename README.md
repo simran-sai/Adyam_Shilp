@@ -10,7 +10,7 @@
 ## 🌟 Key Features
 
 - **Premium Artisan UI:** Glassmorphism, micro-animations, and a cohesive dark/gold design token system.
-- **Personalized Recommendations Engine:** Multi-signal scoring system tracking view history, cart frequency, and likes/dislikes for real-time product suggestions.
+- **AI-Powered Recommendation Engine:** Hybrid ML system built with Python and FastAPI, utilizing TF-IDF for content-based similarity, TruncatedSVD for collaborative filtering, and KNN for geometric item similarity.
 - **Full E-commerce Flow:** Browse by categories (God Idols, Home Decor, Accessories & Rakhi), view product pages, and manage a shopping cart.
 - **Authentication:** Secure user login and registration using JWT (JSON Web Tokens).
 - **Admin Dashboard:** Add, remove, and manage products via a dedicated admin panel.
@@ -33,6 +33,12 @@
 - Multer + **AWS S3** (Image uploads)
 - Deployed on **AWS Elastic Beanstalk** (Node.js 22, Amazon Linux 2023)
 
+**ML Microservice:**
+- Python 3.11+ & FastAPI
+- scikit-learn, numpy, pandas, scipy
+- Uvicorn server
+- Deployed on **Railway** / via Docker
+
 **Cloud Infrastructure (AWS):**
 | Service | Usage |
 |---|---|
@@ -42,25 +48,21 @@
 
 ---
 
-## ☁️ AWS Architecture
+## ☁️ Architecture
 
 ```
 User (Browser)
     │
     ├──► Vercel CDN ──► React Frontend
     │
-    └──► AWS Elastic Beanstalk (ap-south-1)
+    └──► AWS Elastic Beanstalk (Node.js Backend)
               │
-              ├──► EC2 Instance (Node.js 22)
-              │         └── Express.js REST API
+              ├──► MongoDB Atlas (E-Commerce DB & Events)
               │
-              ├──► MongoDB Atlas (E-Commerce DB)
-              │         ├── Products collection
-              │         └── Users collection
+              ├──► AWS S3 (adyam-shilp-images)
               │
-              └──► AWS S3 (adyam-shilp-images)
-                        ├── products/ (59 images)
-                        └── deployments/ (app bundles)
+              └──► Railway / Docker (Python FastAPI ML Service)
+                        └── scikit-learn TF-IDF / SVD / KNN Engines
 ```
 
 ---
@@ -69,6 +71,7 @@ User (Browser)
 
 ### Prerequisites
 - Node.js v18+
+- Python 3.11+
 - AWS Account (for S3 image uploads)
 - MongoDB Atlas account
 
@@ -78,7 +81,20 @@ git clone https://github.com/Anwesha0425/Adyam_Shilp.git
 cd Adyam_Shilp
 ```
 
-### 2. Backend Setup
+### 2. ML Service Setup
+```bash
+# Easy start (Windows):
+powershell -File start-ml.ps1
+```
+Or manually:
+```bash
+cd ml-service
+pip install -r requirements.txt
+python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+API Docs available at: `http://localhost:8000/docs`
+
+### 3. Backend Setup
 ```bash
 cd backend
 npm install
@@ -93,6 +109,7 @@ AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 AWS_REGION=ap-south-1
 S3_BUCKET_NAME=your_s3_bucket_name
+ML_SERVICE_URL=http://localhost:8000
 ```
 
 Start the backend:
@@ -100,7 +117,7 @@ Start the backend:
 npm start
 ```
 
-### 3. Frontend Setup
+### 4. Frontend Setup
 ```bash
 # From the root Adyam_Shilp/ folder
 npm install
@@ -122,32 +139,20 @@ The app opens at `http://localhost:3000`.
 
 ## 🌍 Deployment
 
-### Backend → AWS Elastic Beanstalk
+### ML Service → Railway.app
+1. Push to GitHub
+2. Connect Railway to the repository and select the `ml-service` folder.
+3. Railway will auto-detect the Dockerfile and deploy the FastAPI service.
 
-1. Install & configure AWS CLI:
-   ```bash
-   aws configure
-   ```
-2. Create an S3 bucket for images
-3. Zip the `backend/` folder (excluding `node_modules/`, `.env`, `upload/`)
-4. Upload to S3 and deploy via EB CLI or AWS Console
-5. Set all environment variables in EB → Configuration → Software
+### Backend → AWS Elastic Beanstalk
+1. Zip the `backend/` folder (excluding `node_modules/`, `.env`, `upload/`)
+2. Upload to S3 and deploy via EB CLI or AWS Console
+3. Set all environment variables in EB (including `ML_SERVICE_URL` pointing to the Railway ML URL)
 
 ### Frontend → Vercel
-
 1. Import the GitHub repository on [vercel.com](https://vercel.com)
-2. Set environment variable:
-   ```
-   REACT_APP_API_URL = https://your-eb-url.elasticbeanstalk.com
-   ```
+2. Set environment variable: `REACT_APP_API_URL` to your EB URL
 3. Deploy
-
-### Database Seeding (New Atlas Cluster)
-If you need to seed products into a fresh MongoDB cluster, use:
-```bash
-cd backend
-node seed_via_api.js   # Seeds 33 products via the live API
-```
 
 ---
 
@@ -157,24 +162,23 @@ node seed_via_api.js   # Seeds 33 products via the live API
 Adyam_Shilp/
 ├── src/                        # React frontend
 │   ├── Components/             # Reusable UI components
-│   │   ├── Assets/             # Local images & product data
-│   │   ├── Navbar/
-│   │   ├── Hero/
-│   │   ├── Item/
-│   │   └── ...
 │   ├── Pages/                  # Route pages
 │   ├── Context/                # React Context (ShopContext)
 │   └── App.js
 │
 ├── backend/                    # Node.js/Express API
 │   ├── index.js                # Main server (S3 + MongoDB)
-│   ├── package.json
-│   ├── .ebignore               # Elastic Beanstalk ignore rules
-│   ├── seed_via_api.js         # Product seeder script
-│   └── update_images_s3.js     # Migrate image URLs to S3
+│   └── Dockerfile
 │
+├── ml-service/                 # Python FastAPI Microservice
+│   ├── main.py                 # API endpoints
+│   ├── recommender.py          # TF-IDF, SVD, KNN algorithms
+│   ├── requirements.txt
+│   └── Dockerfile
+│
+├── docker-compose.yml          # Local docker-compose configuration
+├── start-ml.ps1                # Script to start ML service
 ├── admin/                      # Admin dashboard
-├── .gitignore
 └── README.md
 ```
 
@@ -182,7 +186,7 @@ Adyam_Shilp/
 
 ## 🔐 Environment Variables
 
-> **Never commit `.env` files.** All secrets are managed via AWS EB environment variables and local `.env` files (git-ignored).
+> **Never commit `.env` files.**
 
 | Variable | Where | Description |
 |---|---|---|
@@ -192,6 +196,7 @@ Adyam_Shilp/
 | `AWS_SECRET_ACCESS_KEY` | backend/.env + EB | AWS credentials |
 | `AWS_REGION` | backend/.env + EB | e.g. `ap-south-1` |
 | `S3_BUCKET_NAME` | backend/.env + EB | S3 bucket for images |
+| `ML_SERVICE_URL` | backend/.env + EB | URL for the ML Microservice |
 | `REACT_APP_API_URL` | .env + Vercel | Backend API base URL |
 
 ---
